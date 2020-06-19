@@ -1,22 +1,27 @@
 <template>
   <div id="app">
-    <!-- <div id="nav">
-      <router-link to="/">Home</router-link>|
-      <router-link to="/about">About</router-link>
-    </div> -->
     <router-view />
     <van-tabbar v-model="active">
       <van-tabbar-item icon="wap-home-o" replace to="/Home">首页</van-tabbar-item>
-      <van-tabbar-item icon="shop-o">分类</van-tabbar-item>
-      <van-tabbar-item icon="cart-o" badge="0">购物车</van-tabbar-item>
-      <van-tabbar-item icon="user-o">我的</van-tabbar-item>
+      <van-tabbar-item icon="shop-o" to="/Classification">分类</van-tabbar-item>
+      <van-tabbar-item icon="cart-o" badge="0" to="/ShoppingCart">购物车</van-tabbar-item>
+      <van-tabbar-item icon="user-o" to="/User">我的</van-tabbar-item>
     </van-tabbar>
   </div>
 </template>
 
 <style lang="scss">
+$design-width:750; //设计稿width
+
+@function rem($px) {
+  @return $px / $design-width * 10+rem;
+}
 body{
   background-color: #F0F0F0;
+
+  #app{
+    padding-bottom: rem(120);
+  }
 }
 </style>
 <script>

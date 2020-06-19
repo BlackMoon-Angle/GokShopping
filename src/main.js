@@ -2,12 +2,13 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import 'lib-flexible/flexible'
 /*---------------------------------Vant组件库--------------------------------- */
 //搜索框组件
 import { Search } from 'vant';
 Vue.use(Search);
 
-//布局组件
+//Layout布局组件
 import { Col, Row } from 'vant';
 Vue.use(Col);
 Vue.use(Row);
@@ -29,6 +30,11 @@ Vue.use(SwipeItem);
 //轮播图懒加载组件
 import { Lazyload } from 'vant';
 Vue.use(Lazyload);
+
+//宫格布局组件
+import { Grid, GridItem } from 'vant';
+Vue.use(Grid);
+Vue.use(GridItem);
 /*---------------------------------Vant组件库--------------------------------- */
 
 Vue.config.productionTip = false;
