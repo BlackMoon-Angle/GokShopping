@@ -17,8 +17,6 @@ $design-width:750; //设计稿width
   @return $px / $design-width * 10+rem;
 }
 body{
-  background-color: #F0F0F0;
-
   #app{
     padding-bottom: rem(120);
   }

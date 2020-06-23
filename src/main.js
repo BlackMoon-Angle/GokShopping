@@ -35,6 +35,15 @@ Vue.use(Lazyload);
 import { Grid, GridItem } from 'vant';
 Vue.use(Grid);
 Vue.use(GridItem);
+
+//通知栏
+import { NoticeBar } from 'vant';
+Vue.use(NoticeBar);
+
+//单元组件
+import { Cell, CellGroup } from 'vant';
+Vue.use(Cell);
+Vue.use(CellGroup);
 /*---------------------------------Vant组件库--------------------------------- */
 
 Vue.config.productionTip = false;

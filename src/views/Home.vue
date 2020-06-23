@@ -1,63 +1,58 @@
 <template>
   <div>
-    <!-- 搜索框 -->
-    <van-search v-model="value" shape="round" background="#cd4848" placeholder="请输入搜索关键词" />
+    <!-- 通知栏 -->
+    <van-notice-bar left-icon="volume-o" text="白玉神驹合金车模限量编号版名单公示与说明。  王者荣耀周边商城手办热销中!" />
     <!-- 轮播图 -->
     <van-swipe :autoplay="3000">
       <van-swipe-item v-for="(image, index) in images" :key="index">
         <img v-lazy="image" />
       </van-swipe-item>
     </van-swipe>
-    <!-- 导航 -->
+    <!-- 宫格导航 -->
     <van-grid>
       <van-grid-item
-        icon="https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200615154412_976473.png"
-        text="鲜货上架"
+        icon="https://game.gtimg.cn/images/daojushop/zb/ad/201804/20180418190939_668278.png"
+        text="全部周边"
       />
       <van-grid-item
-        icon="https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200615154419_298519.png"
-        text="服饰专区"
+        icon="https://game.gtimg.cn/images/daojushop/zb/ad/201804/20180418190952_334384.png"
+        text="新品尝鲜"
       />
       <van-grid-item
-        icon="https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200615154424_209814.png"
-        text="毛绒玩偶"
+        icon="https://game.gtimg.cn/images/daojushop/zb/ad/201804/20180418191003_538284.png"
+        text="人气爆款"
       />
       <van-grid-item
-        icon="https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200615154430_815866.png"
+        icon="https://game.gtimg.cn/images/daojushop/zb/ad/201804/20180418191015_868942.png"
         text="生活用品"
       />
     </van-grid>
-    <!-- 广告 -->
-    <section class="advertisement">
-      <a href>
-        <img
-          src="https://game.gtimg.cn/images/daojushop/zb/ad/202004/20200427093656_278646.png"
-          alt
-        />
-      </a>
-      <a href>
-        <img
-          src="https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200618095840_211199.png"
-          alt
-        />
-      </a>
+    <!-- 首页渲染的商品列表 -->
+    <section class="commodity_list">
+      <section class="commodity" v-for="(item, index) in commoditylist" :key="index">
+        <div class="commodity_title">
+          <h3>{{item.title}}</h3>
+        </div>
+        <ul class="commodity_ul">
+          <li v-for="(item2, index2) in item.commodity" :key="index2">
+            <div class="li_img">
+              <img
+                :src="item2.img"
+                alt
+              />
+            </div>
+            <div class="li_name_price">
+              <div class="li_name">
+                <h5>{{item2.name}}</h5>
+              </div>
+              <div class="li_price">
+                <p>¥ {{item2.price}}</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </section>
     </section>
-    <!-- 广告2 -->
-    <a href="#" class="advertisement2">
-      <img src="https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200615155036_831086.gif" alt />
-    </a>
-    <!-- 专场1 -->
-    <div class="special">
-      <div>
-        
-      </div>
-    </div>
-    <!-- 专场2 -->
-    <div class="special2">
-      <div>
-        
-      </div>
-    </div>
   </div>
 </template>
 
@@ -66,18 +61,34 @@
 @import "@/scss/Home.scss";
 </style>
 <script>
+import request from '@/utils/request';// @代表 ./src
 export default {
   data() {
     return {
-      value: "",
+      commoditylist: '',
       images: [
-        "https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200615163513_171904.jpg",
-        "https://game.gtimg.cn/images/daojushop/zb/ad/202004/20200423182404_197766.png",
-        "https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200615154709_248262.jpg",
-        "https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200617165911_497123.png",
-        "https://game.gtimg.cn/images/daojushop/zb/ad/202006/20200616110817_649495.jpg"
+        "https://game.gtimg.cn/images/daojushop/zb/ad/202004/20200422094735_232852.jpg",
+        "https://game.gtimg.cn/images/daojushop/zb/ad/202004/20200422094741_322028.jpg",
+        "https://game.gtimg.cn/images/daojushop/zb/ad/202004/20200422094853_137630.jpg",
+        "https://game.gtimg.cn/images/daojushop/zb/ad/202004/20200422094747_872520.jpg",
+        "https://game.gtimg.cn/images/daojushop/zb/ad/202004/20200422094939_704763.png"
       ]
     };
+  },
+  methods: {
+    commodity() {
+      request
+        .get("http://localhost:8080/json/home.json")
+        .then(response => {
+          this.commoditylist = response.data
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
+  created:function(){
+    this.commodity();
   }
 };
 </script>
