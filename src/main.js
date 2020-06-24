@@ -44,6 +44,24 @@ Vue.use(NoticeBar);
 import { Cell, CellGroup } from 'vant';
 Vue.use(Cell);
 Vue.use(CellGroup);
+
+//吸顶组件
+import { Sticky } from 'vant';
+Vue.use(Sticky);
+
+// 下拉菜单组件
+import { DropdownMenu, DropdownItem } from 'vant';
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
+
+//复选框组件
+import { Checkbox, CheckboxGroup } from 'vant';
+Vue.use(Checkbox);
+Vue.use(CheckboxGroup);
+
+//商品卡片组件
+import { Card } from 'vant';
+Vue.use(Card);
 /*---------------------------------Vant组件库--------------------------------- */
 
 Vue.config.productionTip = false;

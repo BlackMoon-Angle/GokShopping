@@ -44,9 +44,17 @@ $design-width:750; //设计稿width
 
     // 订单
     .van-grid {
-        span{
+        .van-grid-item {
+            .van-grid-item__content {
+                padding: rem(20) rem(10);
+            }
+
+        }
+
+        span {
             font-size: rem(25);
         }
+
         .van1 {
             div {
                 i {
@@ -58,6 +66,7 @@ $design-width:750; //设计稿width
                 }
             }
         }
+
         .van2 {
             div {
                 i {
@@ -69,6 +78,7 @@ $design-width:750; //设计稿width
                 }
             }
         }
+
         .van3 {
             div {
                 i {
@@ -80,6 +90,7 @@ $design-width:750; //设计稿width
                 }
             }
         }
+
         .van4 {
             div {
                 i {
@@ -91,6 +102,7 @@ $design-width:750; //设计稿width
                 }
             }
         }
+
         .van5 {
             div {
                 i {
@@ -101,6 +113,97 @@ $design-width:750; //设计稿width
                     background-position: rem(0) rem(-55);
                 }
             }
+        }
+    }
+
+    //单元格
+    .cell {
+        i:nth-of-type(1) {
+            width: rem(50);
+            height: rem(50);
+            background: url(https://js01.daoju.qq.com/zb/v2/ico-mall.png) no-repeat;
+            background-size: rem(700) rem(900);
+            background-position: rem(-530) rem(-10);
+        }
+    }
+
+    .cell2 {
+        i:nth-of-type(1) {
+            width: rem(50);
+            height: rem(50);
+            background: url(https://js01.daoju.qq.com/zb/v2/ico-mall.png) no-repeat;
+            background-size: rem(700) rem(900);
+            background-position: rem(-50) rem(-110);
+        }
+    }
+
+    .cell3 {
+        i:nth-of-type(1) {
+            width: rem(50);
+            height: rem(50);
+            background: url(https://js01.daoju.qq.com/zb/v2/ico-mall.png) no-repeat;
+            background-size: rem(700) rem(900);
+            background-position: rem(-237) rem(-15);
+        }
+    }
+
+    .cell4 {
+        i:nth-of-type(1) {
+            width: rem(50);
+            height: rem(50);
+            background: url(https://js01.daoju.qq.com/zb/v2/ico-mall.png) no-repeat;
+            background-size: rem(700) rem(900);
+            background-position: rem(-632) rem(-65);
+        }
+    }
+
+    .cell5 {
+        i:nth-of-type(1) {
+            width: rem(50);
+            height: rem(50);
+            background: url(https://js01.daoju.qq.com/zb/v2/ico-mall.png) no-repeat;
+            background-size: rem(700) rem(900);
+            background-position: rem(-200) rem(-110);
+        }
+    }
+
+    .cell6 {
+        i:nth-of-type(1) {
+            width: rem(50);
+            height: rem(50);
+            background: url(https://js01.daoju.qq.com/zb/v2/ico-mall.png) no-repeat;
+            background-size: rem(710) rem(910);
+            background-position: rem(-577) rem(-150);
+        }
+    }
+
+    .cell7 {
+        i:nth-of-type(1) {
+            width: rem(50);
+            height: rem(50);
+            background: url(https://js01.daoju.qq.com/zb/v2/ico-mall.png) no-repeat;
+            background-size: rem(710) rem(910);
+            background-position: rem(-90) rem(-150);
+        }
+    }
+
+    .cell8 {
+        i:nth-of-type(1) {
+            width: rem(50);
+            height: rem(50);
+            background: url(https://js01.daoju.qq.com/zb/v2/ico-mall.png) no-repeat;
+            background-size: rem(710) rem(910);
+            background-position: rem(-200) rem(-70);
+        }
+    }
+
+    .cell9 {
+        i:nth-of-type(1) {
+            width: rem(50);
+            height: rem(50);
+            background: url(https://js01.daoju.qq.com/zb/v2/ico-mall.png) no-repeat;
+            background-size: rem(710) rem(910);
+            background-position: rem(-270) rem(-110);
         }
     }
 }

@@ -1,0 +1,25 @@
+$design-width:750; //设计稿width
+
+@function rem($px) {
+    @return $px / $design-width * 10+rem;
+}
+
+// 下拉菜单
+.van-dropdown-menu {
+    div {
+        color: gray;
+    }
+
+    .van-dropdown-item__content {
+        position: absolute;
+        max-height: 30%;
+    }
+}
+
+.commodity_list {
+    .old_proce {
+        margin-left: rem(20);
+        font-size: rem(15);
+        text-decoration: line-through;
+    }
+}

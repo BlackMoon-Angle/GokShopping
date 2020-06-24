@@ -17,12 +17,12 @@ $design-width:750; //设计稿width
 // 轮播图样式
 .van-swipe {
   width: 100%;
-  height: rem(360);
+  height: rem(350);
   position: relative;
 
   .van-swipe-item {
     width: 100%;
-    height: 100%;
+    // height: 100%;
 
     img {
       width: 100%;
