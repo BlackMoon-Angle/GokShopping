@@ -1,40 +1,50 @@
 <template>
   <div>
-    <!-- 吸顶 -->
-    <van-sticky>
-      <!-- 搜索 -->
-      <van-search v-model="value" shape="round" background="#fff" placeholder />
-      <!-- 下拉菜单 -->
-      <van-dropdown-menu active-color="#000000">
-        <van-dropdown-item v-model="value1" :options="option1" />
-        <van-dropdown-item v-model="value2" :options="option2" @click.native="classification" />
-        <van-dropdown-item
-          v-model="value3"
-          :options="option3"
-          @click.native="Ascending_Descending"
-        />
-      </van-dropdown-menu>
-    </van-sticky>
-    <!-- 首页渲染的商品列表 -->
-    <section class="commodity_list">
-      <section class="commodity">
-        <ul class="commodity_ul">
-          <li v-for="(item, index) in commoditylist" :key="index">
-            <div class="li_img">
-              <img :src="item.img" alt />
-            </div>
-            <div class="li_name_price">
-              <div class="li_name">
-                <h5>{{item.name}}</h5>
+    <div class="list" v-if="list_box">
+      <!-- 吸顶 -->
+      <van-sticky>
+        <!-- 搜索 -->
+        <van-search v-model="value" shape="round" background="#fff" placeholder />
+        <!-- 下拉菜单 -->
+        <van-dropdown-menu active-color="#000000">
+          <van-dropdown-item v-model="value1" :options="option1" @click.native="default_data" />
+          <van-dropdown-item v-model="value2" :options="option2" @click.native="classification" />
+          <van-dropdown-item
+            v-model="value3"
+            :options="option3"
+            @click.native="Ascending_Descending"
+          />
+        </van-dropdown-menu>
+      </van-sticky>
+      <!-- 首页渲染的商品列表 -->
+      <section class="commodity_list">
+        <section class="commodity">
+          <ul class="commodity_ul">
+            <li
+              v-for="(item) in commoditylist"
+              :key="item.shop_id"
+              :id="item.shop_id"
+              @click="router_detail(item.shop_id)"
+            >
+              <div class="li_img">
+                <img :src="item.img" alt />
               </div>
-              <div class="li_price">
-                <p>¥{{item.new_pri}}</p>
+              <div class="li_name_price">
+                <div class="li_name">
+                  <h5>{{item.name}}</h5>
+                </div>
+                <div class="li_price">
+                  <p>¥{{item.new_pri}}</p>
+                </div>
               </div>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </section>
       </section>
-    </section>
+    </div>
+    <div class="detail" v-if="detail_box">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -43,14 +53,16 @@ import request from "@/utils/request"; // @代表 ./src
 export default {
   data() {
     return {
+      list_box: true,
+      detail_box: false,
       commoditylist: "", //遍历目标
       commoditylist2: "", //用于分类、返回默认排序
       value: "",
-      value1: 0,
+      value1: "default",
       value2: "a",
       value3: "default",
       value4: "a",
-      option1: [{ text: "默认", value: 0 }],
+      option1: [{ text: "默认", value: "default" }],
       option2: [
         { text: "分类", value: "a" },
         { text: "精品手办", value: "model" },
@@ -65,6 +77,20 @@ export default {
       ]
     };
   },
+  watch: {
+    $route(to) {
+      switch (to.fullPath) {
+        case "/Classification":
+          this.list_box = true;
+          this.detail_box = false;
+          break;
+        case "/Classification/Detail":
+          this.list_box = false;
+          this.detail_box = true;
+          break;
+      }
+    }
+  },
   methods: {
     //请求数据
     commodity() {
@@ -77,6 +103,10 @@ export default {
         .catch(err => {
           console.log(err);
         });
+    },
+    //默认按钮
+    default_data() {
+      this.commoditylist = this.commoditylist2;
     },
     //价格升降序
     Ascending_Descending() {
@@ -96,9 +126,9 @@ export default {
           });
           this.commoditylist = data;
           break;
-        case "default"://默认排序
+        case "default": //默认排序
           data.sort((a, b) => {
-            return a = b;
+            return (a = b);
           });
           this.commoditylist = data;
           break;
@@ -142,6 +172,11 @@ export default {
           this.commoditylist = data2;
           break;
       }
+    },
+    //列表页跳转到详细页
+    //将id传到详细页
+    router_detail(e_id) {
+      this.$router.push({ path: "Detail/" + e_id });
     }
   },
   created: function() {

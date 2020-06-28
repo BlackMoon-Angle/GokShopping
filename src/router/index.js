@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import Classification from "../views/Classification.vue"
 import ShoppingCart from "../views/ShoppingCart.vue"
+import Detail from "../components/Detail.vue"
 import User from "../views/User.vue"
 
 Vue.use(VueRouter);
@@ -21,7 +22,12 @@ const routes = [
   {
     path: "/Classification",
     name: "Classification",
-    component: Classification
+    component: Classification,
+  },
+  {
+    path: "/Detail/:id",
+    name: "Detail",
+    component: Detail
   },
   {
     path: "/ShoppingCart",

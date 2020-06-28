@@ -59,9 +59,31 @@ import { Checkbox, CheckboxGroup } from 'vant';
 Vue.use(Checkbox);
 Vue.use(CheckboxGroup);
 
-//商品卡片组件
-import { Card } from 'vant';
-Vue.use(Card);
+//商品导航组件
+import { GoodsAction, GoodsActionIcon, GoodsActionButton } from 'vant';
+Vue.use(GoodsAction);
+Vue.use(GoodsActionButton);
+Vue.use(GoodsActionIcon);
+
+//导航栏组件
+import { NavBar } from 'vant';
+Vue.use(NavBar);
+
+//提交订单组件
+import { SubmitBar } from 'vant';
+Vue.use(SubmitBar);
+
+//用户评分组件
+import { Rate } from 'vant';
+Vue.use(Rate);
+
+//消息通知组件
+import { Notify } from 'vant';
+Vue.use(Notify);
+
+//进步器组件
+import { Stepper } from 'vant';
+Vue.use(Stepper);
 /*---------------------------------Vant组件库--------------------------------- */
 
 Vue.config.productionTip = false;
