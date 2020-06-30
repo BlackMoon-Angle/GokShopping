@@ -10,20 +10,30 @@
     </section>
     <!-- 购物车不为空 -->
     <section class="shop_cart" v-if="shop_cart">
-      <van-checkbox class="van_head" v-model="all_checked">
+      <van-checkbox
+        class="van_head"
+        v-model="this.$store.state.VueX_ShopCart.all_checked"
+        @click.native="AllSelect_goods()"
+      >
         <div class="van_img">
           <img src="https://game.gtimg.cn/images/daoju/base/logo/biz/yxzj.png" alt />
         </div>
         <p class="van_text">王者荣耀供应商:官方商城</p>
       </van-checkbox>
       <!-- 主信息 -->
-      <div class="main" v-for="item in ShopCartInfo" :key="item.cart_id">
-        <van-checkbox class="van_main" v-model="item.checked">
+      <div
+        :id="item.cart_id"
+        class="main"
+        v-for="(item) in this.$store.state.VueX_ShopCart.ShopCartInfo"
+        :key="item.cart_id"
+      >
+        <van-checkbox
+          class="van_main"
+          v-model="item.checked"
+          @click.native="select_goods(item.cart_id)"
+        >
           <a href="#" class="main_img">
-            <img
-              :src="item.img"
-              alt
-            />
+            <img :src="item.img" alt />
           </a>
         </van-checkbox>
         <!-- 商品信息 -->
@@ -33,8 +43,12 @@
         </div>
         <!-- 商品信息操作 -->
         <div class="info_operation">
-          <a @click="showNotify">×</a>
-          <van-stepper v-model="item.buy_num" />
+          <a @click="delete_goods(item.cart_id)">×</a>
+          <van-stepper
+            v-model="item.buy_num"
+            @plus="add_BuyNum(item.cart_id)"
+            @minus="reduce_BuyNum(item.cart_id)"
+          />
         </div>
       </div>
       <van-submit-bar :price="total_price * 100" button-text="提交订单" />
@@ -57,11 +71,9 @@ export default {
     return {
       empty_cart: true, //购物车为空时
       shop_cart: false, //购物车不为空时
-      ShopCartInfo: JSON.parse(localStorage.getItem("ShopCartInfo")) || [], //获取到的，加入到购物车的商品数据
       show_success: false, //成功时
       show_fail: false, //失败时
-      // value: 1,
-      total_price: 258.0,
+      total_price: this.$store.state.VueX_ShopCart.Total_price,
       all_checked: false
     };
   },
@@ -81,7 +93,7 @@ export default {
       }, 2000);
     },
     ShopCart_data() {
-      if (this.ShopCartInfo.length == 0) {
+      if (this.$store.state.VueX_ShopCart.ShopCartInfo.length == 0) {
         this.empty_cart = true;
         this.shop_cart = false;
         this.$dialog.alert({
@@ -91,6 +103,27 @@ export default {
         this.empty_cart = false;
         this.shop_cart = true;
       }
+    },
+    //添加购买数量
+    add_BuyNum(add_id) {
+      this.$store.dispatch("add_num", add_id);
+    },
+    //减少购买数量
+    reduce_BuyNum(reduce_id) {
+      this.$store.dispatch("reduce_num", reduce_id);
+    },
+    //删除商品
+    delete_goods(delete_id) {
+      this.$store.dispatch("delete", delete_id);
+      this.showNotify();
+    },
+    //单个选择商品
+    select_goods(select_id) {
+      this.$store.dispatch("select", select_id);
+    },
+    // 全选商品
+    AllSelect_goods() {
+      this.$store.dispatch("select_all");
     }
   },
   created: function() {

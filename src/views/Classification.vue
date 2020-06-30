@@ -27,7 +27,9 @@
               @click="router_detail(item.shop_id)"
             >
               <div class="li_img">
-                <img :src="item.img" alt />
+                <lazy-component>
+                  <img :src="item.img" alt />
+                </lazy-component>
               </div>
               <div class="li_name_price">
                 <div class="li_name">

@@ -1,25 +1,26 @@
-// import Vue from 'vue';
-import Vuex from 'vuex';
-export default new Vuex.Store({
+let ShopCartInfo = {
+    getData() {
+        //获取数据
+        let list = localStorage.getItem("ShopCartInfo");
+        if (list) {
+            return JSON.parse(list);
+        } else {
+            return [];
+        }
+    },
+    setData(data) {
+        //保存数据
+        localStorage.setItem("ShopCartInfo", JSON.stringify(data));
+    }
+};
+export default {
     state: {//使用state数据传输，传输购物车中的商品清单
-        ShopCartInfo: JSON.parse(localStorage.getItem('ShopCartInfo') || '[]'),//获取数据
+        ShopCartInfo: ShopCartInfo.getData(),//获取数据
         Total_price: 0,//总价
         all_checked: false,//一级全选按钮
         shop_num: 0//购买的数量，用于记录，改变购物车左上角的计数图标
     },
     getters: {//利用getters对数据过滤，使其返回的值为购物车中商品的总消费
-        //购物车列表
-        carList(state) {
-            // 初始化全选状态
-            if (state.all_checked) {
-                state.ShopCartInfo.forEach((item) => {
-                    item.checked = true
-                })
-            }
-            // 列表变化存本地
-            localStorage.setItem("ShopCartInfo", JSON.stringify(state.ShopCartInfo));
-            return state.ShopCartInfo
-        },
         //选中商品的金额
         Total_price(state) {
             let all_money = 0;
@@ -39,27 +40,29 @@ export default new Vuex.Store({
                 img: data.img,//商品主视图
                 buy_num: data.buy_num,//购买数量
                 new_pri: data.new_pri,//单价
-                checked: true//复选框的布尔值
+                checked: data.checked//复选框的布尔值
             }
             let index = -1
             index = state.ShopCartInfo.findIndex(item => {//返回元素的索引位置，如果没有符合条件的元素返回 -1
                 return item.cart_id == data.cart_id
             })
             if (index == -1) {//返回-1说明购物车里没有这个商品，则push进去，如果返回下标，则说明购物车已存在物品
-                state.car.push(datas)
+                state.ShopCartInfo.push(datas)
+                ShopCartInfo.setData(state.ShopCartInfo);
+                this._vm.$toast.success('添加成功！');
             } else {
-                this.$dialog.alert({
+                this._vm.$dialog.alert({
                     message: "商品已加入到购物车，请到购物车中确认！"
                 });
             }
-            this.showNotify();//显示添加成功
         },
         //购买数量增加
         add_num(state, cart_id) {
             let index = state.ShopCartInfo.findIndex(item => {
                 return item.cart_id == cart_id
             })
-            return state.ShopCartInfo[index].buy_num++
+            state.ShopCartInfo[index].buy_num++;
+            ShopCartInfo.setData(state.ShopCartInfo);
         },
         //购买数量减少
         reduce_num(state, cart_id) {
@@ -67,9 +70,11 @@ export default new Vuex.Store({
                 return item.cart_id == cart_id
             })
             if (state.ShopCartInfo[index].num <= 1) {
-                return state.ShopCartInfo[index].buy_num = 1
+                state.ShopCartInfo[index].buy_num = 1;
+                ShopCartInfo.setData(state.ShopCartInfo);
             } else {
-                return state.ShopCartInfo[index].buy_num--
+                state.ShopCartInfo[index].buy_num--;
+                ShopCartInfo.setData(state.ShopCartInfo);
             }
         },
         //购物车单选
@@ -81,6 +86,7 @@ export default new Vuex.Store({
             let flag = state.ShopCartInfo.some((item) => {
                 return item.checked == false
             })
+            ShopCartInfo.setData(state.ShopCartInfo);
             if (!flag) {//如果全部选中，则全选状态也改变
                 state.all_checked = true
             } else {
@@ -94,15 +100,22 @@ export default new Vuex.Store({
                 state.ShopCartInfo.forEach((item) => {
                     item.checked = true
                 })
+                ShopCartInfo.setData(state.ShopCartInfo);
             } else {
                 state.ShopCartInfo.forEach((item) => {
                     item.checked = false
                 })
+                ShopCartInfo.setData(state.ShopCartInfo);
             }
         },
         //删除商品
-        delete(state) {
-            console.log(state)
+        delete(state, cart_id) {
+            state.ShopCartInfo.forEach((item,index) => {
+                if (item.cart_id == cart_id) {
+                    state.ShopCartInfo.splice(index, 1)
+                }
+            })
+            ShopCartInfo.setData(state.ShopCartInfo);
         }
     },
     //异步触发mutations里面的方法 在外部组件里进行全局执行actions里面方法的时候，你只需要用执行this.$store
@@ -122,10 +135,8 @@ export default new Vuex.Store({
         select_all({ commit }) {//全选
             commit('select_all')
         },
-        delete({ commit }) {//删除
-            commit('delete')
+        delete({ commit }, cart_id) {//删除
+            commit('delete', cart_id)
         },
     }
-})
-
-// export default store;
+}

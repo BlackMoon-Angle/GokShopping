@@ -36,10 +36,9 @@
         <ul class="commodity_ul">
           <li v-for="(item2, index2) in item.commodity" :key="index2">
             <div class="li_img">
-              <img
-                :src="item2.img"
-                alt
-              />
+              <lazy-component>
+                <img :src="item2.img" alt />
+              </lazy-component>
             </div>
             <div class="li_name_price">
               <div class="li_name">
@@ -61,11 +60,11 @@
 @import "@/scss/Home.scss";
 </style>
 <script>
-import request from '@/utils/request';// @代表 ./src
+import request from "@/utils/request"; // @代表 ./src
 export default {
   data() {
     return {
-      commoditylist: '',
+      commoditylist: "",
       images: [
         "https://game.gtimg.cn/images/daojushop/zb/ad/202004/20200422094735_232852.jpg",
         "https://game.gtimg.cn/images/daojushop/zb/ad/202004/20200422094741_322028.jpg",
@@ -80,14 +79,14 @@ export default {
       request
         .get("http://localhost:8080/json/home.json")
         .then(response => {
-          this.commoditylist = response.data
+          this.commoditylist = response.data;
         })
         .catch(err => {
           console.log(err);
         });
     }
   },
-  created:function(){
+  created: function() {
     this.commodity();
   }
 };
