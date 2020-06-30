@@ -2,6 +2,7 @@ import Vue from "vue";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
+import Vuex from 'vuex'
 import 'lib-flexible/flexible'
 /*---------------------------------Vant组件库--------------------------------- */
 //搜索框组件
@@ -84,7 +85,13 @@ Vue.use(Notify);
 //进步器组件
 import { Stepper } from 'vant';
 Vue.use(Stepper);
+
+//提示组件
+import { Dialog } from 'vant';
+Vue.use(Dialog);
 /*---------------------------------Vant组件库--------------------------------- */
+
+Vue.use(Vuex)
 
 Vue.config.productionTip = false;
 

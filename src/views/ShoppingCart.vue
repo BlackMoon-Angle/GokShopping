@@ -1,45 +1,53 @@
 <template>
   <div>
     <!-- 购物车为空时 -->
-    <section class="empty_cart">
+    <section class="empty_cart" v-if="empty_cart">
       <div class="box">
         <i></i>
         <div class="text">购物车好空呀,快去选购吧</div>
-        <a href="#">去逛逛</a>
+        <a>去逛逛</a>
       </div>
     </section>
     <!-- 购物车不为空 -->
-    <section class="shop_cart">
-      <van-checkbox class="van_head" v-model="checked">
+    <section class="shop_cart" v-if="shop_cart">
+      <van-checkbox class="van_head" v-model="all_checked">
         <div class="van_img">
           <img src="https://game.gtimg.cn/images/daoju/base/logo/biz/yxzj.png" alt />
         </div>
         <p class="van_text">王者荣耀供应商:官方商城</p>
       </van-checkbox>
       <!-- 主信息 -->
-      <div class="main">
-        <van-checkbox class="van_main" v-model="checked">
+      <div class="main" v-for="item in ShopCartInfo" :key="item.cart_id">
+        <van-checkbox class="van_main" v-model="item.checked">
           <a href="#" class="main_img">
             <img
-              src="https://game.gtimg.cn/images/zb/x5/uploadImg/goods/201910/20191017152303_40971.jpg"
+              :src="item.img"
               alt
             />
           </a>
         </van-checkbox>
         <!-- 商品信息 -->
         <div class="info">
-          <p>游园惊梦甄姬Q版手办</p>
-          <h4>¥258.00</h4>
+          <p>{{item.name}}</p>
+          <h4>¥ {{item.new_pri}}</h4>
         </div>
         <!-- 商品信息操作 -->
         <div class="info_operation">
-          <a href="#">×</a>
-          <van-stepper v-model="value" />
+          <a @click="showNotify">×</a>
+          <van-stepper v-model="item.buy_num" />
         </div>
       </div>
-
       <van-submit-bar :price="total_price * 100" button-text="提交订单" />
     </section>
+
+    <!-- 提示弹出框 -->
+    <!-- 提示弹出框 -->
+    <van-notify v-model="show_success" type="success">
+      <span>删除商品成功</span>
+    </van-notify>
+    <van-notify v-model="show_fail" type="danger">
+      <span>删除商品失败</span>
+    </van-notify>
   </div>
 </template>
 
@@ -47,12 +55,47 @@
 export default {
   data() {
     return {
-      value: 1,
+      empty_cart: true, //购物车为空时
+      shop_cart: false, //购物车不为空时
+      ShopCartInfo: JSON.parse(localStorage.getItem("ShopCartInfo")) || [], //获取到的，加入到购物车的商品数据
+      show_success: false, //成功时
+      show_fail: false, //失败时
+      // value: 1,
       total_price: 258.0,
-      checked: false
+      all_checked: false
     };
   },
-  methods: {}
+  methods: {
+    showNotify() {
+      //成功
+      this.show_success = true;
+      setTimeout(() => {
+        this.show_success = false;
+      }, 2000);
+    },
+    showNotify2() {
+      //失败
+      this.show_fail = true;
+      setTimeout(() => {
+        this.show_fail = false;
+      }, 2000);
+    },
+    ShopCart_data() {
+      if (this.ShopCartInfo.length == 0) {
+        this.empty_cart = true;
+        this.shop_cart = false;
+        this.$dialog.alert({
+          message: "购物车是空的哦！快去购物吧！"
+        });
+      } else {
+        this.empty_cart = false;
+        this.shop_cart = true;
+      }
+    }
+  },
+  created: function() {
+    this.ShopCart_data();
+  }
 };
 </script>
 
