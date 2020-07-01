@@ -10,11 +10,7 @@
     </section>
     <!-- 购物车不为空 -->
     <section class="shop_cart" v-if="shop_cart">
-      <van-checkbox
-        class="van_head"
-        v-model="this.$store.state.VueX_ShopCart.all_checked"
-        @click.native="AllSelect_goods()"
-      >
+      <van-checkbox class="van_head" v-model="$store.state.VueX_ShopCart.all_checked" @click.native="AllSelect_goods()">
         <div class="van_img">
           <img src="https://game.gtimg.cn/images/daoju/base/logo/biz/yxzj.png" alt />
         </div>
@@ -24,7 +20,7 @@
       <div
         :id="item.cart_id"
         class="main"
-        v-for="(item) in this.$store.state.VueX_ShopCart.ShopCartInfo"
+        v-for="(item) in cart_list"
         :key="item.cart_id"
       >
         <van-checkbox
@@ -32,7 +28,7 @@
           v-model="item.checked"
           @click.native="select_goods(item.cart_id)"
         >
-          <a href="#" class="main_img">
+          <a class="main_img">
             <img :src="item.img" alt />
           </a>
         </van-checkbox>
@@ -51,7 +47,7 @@
           />
         </div>
       </div>
-      <van-submit-bar :price="total_price * 100" button-text="提交订单" />
+      <van-submit-bar :price="$store.getters.Total_price * 100" button-text="提交订单" />
     </section>
 
     <!-- 提示弹出框 -->
@@ -73,9 +69,19 @@ export default {
       shop_cart: false, //购物车不为空时
       show_success: false, //成功时
       show_fail: false, //失败时
-      total_price: this.$store.state.VueX_ShopCart.Total_price,
-      all_checked: false
+      cart_list : this.$store.state.VueX_ShopCart.ShopCartInfo
     };
+  },
+  computed: {
+
+  },
+  watch:{
+    list : {
+      deep: true,
+      handler:function() {
+        this.$store.state.VueX_ShopCart.all_checked == true
+      }
+    }
   },
   methods: {
     showNotify() {
@@ -124,10 +130,19 @@ export default {
     // 全选商品
     AllSelect_goods() {
       this.$store.dispatch("select_all");
+    },
+    //防止刷新后全选按钮改变
+    select_all_goods() {
+      this.$store.state.VueX_ShopCart.all_checked = this.$store.state.VueX_ShopCart.ShopCartInfo.every(
+        item => {
+          return item.checked == true;
+        }
+      );
     }
   },
   created: function() {
     this.ShopCart_data();
+    this.select_all_goods();
   }
 };
 </script>

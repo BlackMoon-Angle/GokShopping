@@ -18,7 +18,6 @@ export default {
         ShopCartInfo: ShopCartInfo.getData(),//获取数据
         Total_price: 0,//总价
         all_checked: false,//一级全选按钮
-        shop_num: 0//购买的数量，用于记录，改变购物车左上角的计数图标
     },
     getters: {//利用getters对数据过滤，使其返回的值为购物车中商品的总消费
         //选中商品的金额
@@ -29,8 +28,16 @@ export default {
                     all_money += item.buy_num * item.new_pri
                 }
             })
-            return state.Total_price = all_money
+            return all_money
         },
+        //购买的数量，用于记录，改变购物车左上角的计数图标
+        Shop_num(state) {
+            let shop_num = 0;
+            state.ShopCartInfo.forEach((item) => {
+                shop_num += item.buy_num * 1
+            })
+            return shop_num
+        }
     },
     mutations: {//点击商品列表中的商品，数据添加到购物车中，并显示在购物车中
         add_shop(state, data) {//添加商品
@@ -110,7 +117,7 @@ export default {
         },
         //删除商品
         delete(state, cart_id) {
-            state.ShopCartInfo.forEach((item,index) => {
+            state.ShopCartInfo.forEach((item, index) => {
                 if (item.cart_id == cart_id) {
                     state.ShopCartInfo.splice(index, 1)
                 }

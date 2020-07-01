@@ -1,7 +1,9 @@
 <template>
   <div class="main">
     <!-- 单元格 -->
-    <van-cell class="user" title="登录" icon="https://shp.qlogo.cn/daoju/9999/9999_1/0" is-link />
+    <router-link to="/Login">
+      <van-cell class="user" title="登录" icon="https://shp.qlogo.cn/daoju/9999/9999_1/0" is-link />
+    </router-link>
     <van-cell title="我的订单" is-link value="全部订单" />
     <!-- 订单 -->
     <van-grid :border="false" :column-num="5">

@@ -18,6 +18,9 @@
     进步器组件：Stepper；
     提示组件：Dialog；
     轻提示组件：Toast；
+    表单组件：Form；
+    输入框组件：Field；
+    按钮组件：Button；
 
 */
 import {
@@ -26,7 +29,7 @@ import {
     NoticeBar, Cell, CellGroup, Sticky,
     DropdownMenu, DropdownItem, Checkbox, CheckboxGroup,
     GoodsAction, GoodsActionIcon, GoodsActionButton, NavBar,
-    SubmitBar, Rate, Notify, Stepper, Dialog, Toast
+    SubmitBar, Rate, Notify, Stepper, Dialog, Toast, Form, Field,Button
 } from 'vant';
 
 let vantUI = [Search, Col, Row, Tabbar, TabbarItem,
@@ -34,7 +37,7 @@ let vantUI = [Search, Col, Row, Tabbar, TabbarItem,
     Cell, CellGroup, Sticky, DropdownMenu, DropdownItem,
     Checkbox, CheckboxGroup, GoodsAction, GoodsActionButton,
     GoodsActionIcon, NavBar, SubmitBar, Rate, Notify, Stepper,
-    Dialog, Toast]
+    Dialog, Toast, Form, Field,Button]
 
 export default {
     install(Vue) {

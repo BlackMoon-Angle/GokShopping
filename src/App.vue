@@ -2,11 +2,11 @@
   <div id="app">
     <!-- 主要路由 -->
     <router-view />
-    <van-tabbar v-model="active" v-if="$route.name != 'Detail'">
-      <van-tabbar-item icon="wap-home-o" replace to="/Home">首页</van-tabbar-item>
-      <van-tabbar-item icon="shop-o" to="/Classification">分类</van-tabbar-item>
-      <van-tabbar-item icon="cart-o" badge="0" to="/ShoppingCart">购物车</van-tabbar-item>
-      <van-tabbar-item icon="user-o" to="/User">我的</van-tabbar-item>
+    <van-tabbar v-model="active" v-if="$route.name != 'Detail' && $route.name != 'Login' && $route.name != 'Register'">
+      <van-tabbar-item icon="wap-home-o" replace to="/Home" name="Home">首页</van-tabbar-item>
+      <van-tabbar-item icon="shop-o" to="/Classification" name="Classification">分类</van-tabbar-item>
+      <van-tabbar-item icon="cart-o" :badge="$store.getters.Shop_num" to="/ShoppingCart" name="ShoppingCart">购物车</van-tabbar-item>
+      <van-tabbar-item icon="user-o" to="/User" name="User">我的</van-tabbar-item>
     </van-tabbar>
     <!-- 购物车导航 -->
     <van-goods-action v-if="$route.name == 'Detail'">
@@ -42,7 +42,7 @@ export default {
       ShopCartJson: "", //一开始请求，准备好的数据
       route_navigation: true, //路由导航
       product_navigation: false, //商品导航
-      active: 0
+      active: this.$route.name
     };
   },
   methods: {
