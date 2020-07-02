@@ -2,7 +2,7 @@
   <div id="app">
     <!-- 主要路由 -->
     <router-view />
-    <van-tabbar v-model="active" v-if="$route.name != 'Detail' && $route.name != 'Login' && $route.name != 'Register'">
+    <van-tabbar v-model="active" v-if="$route.name != 'Detail' && $route.name != 'Login' && $route.name != 'Register' && $route.name !='ModifyPassword' ">
       <van-tabbar-item icon="wap-home-o" replace to="/Home" name="Home">首页</van-tabbar-item>
       <van-tabbar-item icon="shop-o" to="/Classification" name="Classification">分类</van-tabbar-item>
       <van-tabbar-item icon="cart-o" :badge="$store.getters.Shop_num" to="/ShoppingCart" name="ShoppingCart">购物车</van-tabbar-item>

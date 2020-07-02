@@ -3,7 +3,7 @@ import axios from 'axios';//引入axios
 
 //创建一个axios对象，配置公共信息
 const request = axios.create({ // request==axios
-    baseURL: '/',
+    baseURL: '/dev-api',
     timeout: 3000//3秒：请求超时时间，如果3秒还没有拿到数据就断开
 
 });

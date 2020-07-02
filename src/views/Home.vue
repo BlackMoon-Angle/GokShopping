@@ -61,6 +61,7 @@
 </style>
 <script>
 import request from "@/utils/request"; // @代表 ./src
+import homeApi from "@/api/home";//引入首页数据请求接口
 export default {
   data() {
     return {
@@ -84,10 +85,21 @@ export default {
         .catch(err => {
           console.log(err);
         });
-    }
+    },
+    fetchData() {
+      homeApi
+        .homeData()
+        .then(response => {
+          console.log(response)
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
   },
   created: function() {
     this.commodity();
+    this.fetchData();
   }
 };
 </script>

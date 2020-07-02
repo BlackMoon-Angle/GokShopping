@@ -7,6 +7,7 @@ import Detail from "../components/Detail.vue"
 import User from "../views/User.vue"
 import Login from "../views/Login.vue"
 import Register from "../views/Register.vue"
+import ModifyPassword from "../views/ModifyPassword"
 
 Vue.use(VueRouter);
 
@@ -51,6 +52,11 @@ const routes = [
     path: "/Register",
     name: "Register",
     component: Register
+  },
+  {
+    path: "/ModifyPassword",
+    name: "ModifyPassword",
+    component: ModifyPassword
   }
 ];
 

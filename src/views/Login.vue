@@ -29,8 +29,13 @@
         @click-left-icon="open_eye()"
         :rules="[{ required: true, message: '请填写密码' }]"
       />
-      <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">提交</van-button>
+      <div class="modify_password">
+        <router-link to="/ModifyPassword">
+          <span>修改密码</span>
+        </router-link>
+      </div>
+      <div style="margin-top: 0px;">
+        <van-button round block type="info" native-type="submit">登录</van-button>
       </div>
     </van-form>
   </div>
@@ -83,5 +88,17 @@ body {
 }
 .van-form {
   margin-top: rem(40);
+}
+.modify_password {
+  width: 100%;
+  height: rem(80);
+  line-height: rem(80);
+  text-align: right;
+
+  span {
+    margin-right: rem(30);
+    color: #1989fa;
+    font-size: rem(30);
+  }
 }
 </style>

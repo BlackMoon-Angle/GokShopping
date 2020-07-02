@@ -5,24 +5,25 @@
       <div class="box">
         <i></i>
         <div class="text">购物车好空呀,快去选购吧</div>
-        <a>去逛逛</a>
+        <router-link to="/Classification">
+          <a>去逛逛</a>
+        </router-link>
       </div>
     </section>
     <!-- 购物车不为空 -->
     <section class="shop_cart" v-if="shop_cart">
-      <van-checkbox class="van_head" v-model="$store.state.VueX_ShopCart.all_checked" @click.native="AllSelect_goods()">
+      <van-checkbox
+        class="van_head"
+        v-model="$store.state.VueX_ShopCart.all_checked"
+        @click.native="AllSelect_goods()"
+      >
         <div class="van_img">
           <img src="https://game.gtimg.cn/images/daoju/base/logo/biz/yxzj.png" alt />
         </div>
         <p class="van_text">王者荣耀供应商:官方商城</p>
       </van-checkbox>
       <!-- 主信息 -->
-      <div
-        :id="item.cart_id"
-        class="main"
-        v-for="(item) in cart_list"
-        :key="item.cart_id"
-      >
+      <div :id="item.cart_id" class="main" v-for="(item) in cart_list" :key="item.cart_id">
         <van-checkbox
           class="van_main"
           v-model="item.checked"
@@ -69,17 +70,15 @@ export default {
       shop_cart: false, //购物车不为空时
       show_success: false, //成功时
       show_fail: false, //失败时
-      cart_list : this.$store.state.VueX_ShopCart.ShopCartInfo
+      cart_list: this.$store.state.VueX_ShopCart.ShopCartInfo
     };
   },
-  computed: {
-
-  },
-  watch:{
-    list : {
+  computed: {},
+  watch: {
+    list: {
       deep: true,
-      handler:function() {
-        this.$store.state.VueX_ShopCart.all_checked == true
+      handler: function() {
+        this.$store.state.VueX_ShopCart.all_checked == true;
       }
     }
   },
@@ -98,6 +97,7 @@ export default {
         this.show_fail = false;
       }, 2000);
     },
+    //判断购物车是否为空
     ShopCart_data() {
       if (this.$store.state.VueX_ShopCart.ShopCartInfo.length == 0) {
         this.empty_cart = true;
