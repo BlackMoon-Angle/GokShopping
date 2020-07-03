@@ -23,13 +23,14 @@
         :rules="[{ required: true, message: '请填写密码' }]"
       />
       <div style="margin: 16px;">
-        <van-button round block type="info" native-type="submit">注册</van-button>
+        <van-button round block type="info" native-type="button" @click="register">注册</van-button>
       </div>
     </van-form>
   </div>
 </template>
 
 <script>
+import registerApi from "@/api/register"; //引入登录数据请求接口
 export default {
   data() {
     return {
@@ -50,6 +51,35 @@ export default {
     open_eye() {
       this.type = this.type === "password" ? "text" : "password";
       this.eye = this.eye === "closed-eye" ? "eye-o" : "closed-eye";
+    },
+    //注册，与后台数据库进行联系
+    register() {
+      registerApi
+        .registerData(this.username, this.password)
+        .then(response => {
+          if (response.data.flag) {
+            //根据返回的布尔值判断
+            this.$dialog
+              .alert({
+                message: response.data.message
+              })
+              .then(() => {
+                this.$router.push({ path: "/login" });
+              });
+          } else {
+            this.$dialog
+              .alert({
+                message: response.data.message
+              })
+              .then(() => {
+                this.username = "";
+                this.password = "";
+              });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

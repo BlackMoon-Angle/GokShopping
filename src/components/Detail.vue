@@ -43,6 +43,7 @@
 
 <script>
 import request from "@/utils/request"; // @代表 ./src
+import detailApi from "@/api/detail";//引入详细页数据请求接口
 export default {
   data() {
     return {
@@ -61,10 +62,10 @@ export default {
     onClickRight() {
       this.$router.push({ path: "/ShoppingCart" });
     },
-    detail_data() {
-      //数据请求
-      request
-        .get("http://localhost:8080/json/Detail.json")
+    //请求mongodb数据中的detail集合数据
+    detailData() {
+      detailApi
+        .detailData()
         .then(response => {
           let data = response.data[0].detail;// eslint-disable-line no-unused-vars
           data.forEach(item => {
@@ -81,7 +82,7 @@ export default {
     }
   },
   created: function() {
-    this.detail_data();
+    this.detailData();
   }
 };
 </script>

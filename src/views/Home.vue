@@ -76,9 +76,10 @@ export default {
     };
   },
   methods: {
-    commodity() {
-      request
-        .get("http://localhost:8080/json/home.json")
+    //请求mongodb数据中的home集合数据
+    homeData() {
+      homeApi
+        .homeData()
         .then(response => {
           this.commoditylist = response.data;
         })
@@ -86,20 +87,9 @@ export default {
           console.log(err);
         });
     },
-    fetchData() {
-      homeApi
-        .homeData()
-        .then(response => {
-          console.log(response)
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
   },
   created: function() {
-    this.commodity();
-    this.fetchData();
+    this.homeData();
   }
 };
 </script>

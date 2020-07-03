@@ -1,9 +1,9 @@
 import request from "@/utils/request"
 
 export default {
-    homeData() {
+    shopcartData() {
         return request({
-            url: `/good/home`,
+            url: `/good/shopcart`,
             method: 'get',
             data:{}
         })

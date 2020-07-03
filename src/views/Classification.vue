@@ -52,6 +52,7 @@
 
 <script>
 import request from "@/utils/request"; // @代表 ./src
+import classificationApi from "@/api/classification";//引入列表页数据请求接口
 export default {
   data() {
     return {
@@ -94,10 +95,10 @@ export default {
     }
   },
   methods: {
-    //请求数据
-    commodity() {
-      request
-        .get("http://localhost:8080/json/Classification.json")
+    //请求mongodb数据中的classification集合数据
+    classificationData() {
+      classificationApi
+        .classificationData()
         .then(response => {
           this.commoditylist = response.data;
           this.commoditylist2 = response.data;
@@ -182,7 +183,7 @@ export default {
     }
   },
   created: function() {
-    this.commodity();
+    this.classificationData();
   }
 };
 </script>

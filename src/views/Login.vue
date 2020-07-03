@@ -35,13 +35,14 @@
         </router-link>
       </div>
       <div style="margin-top: 0px;">
-        <van-button round block type="info" native-type="submit">登录</van-button>
+        <van-button round block type="info" native-type="button" @click="login">登录</van-button>
       </div>
     </van-form>
   </div>
 </template>
 
 <script>
+import loginApi from "@/api/login"; //引入登录数据请求接口
 export default {
   data() {
     return {
@@ -65,6 +66,26 @@ export default {
     open_eye() {
       this.type = this.type === "password" ? "text" : "password";
       this.eye = this.eye === "closed-eye" ? "eye-o" : "closed-eye";
+    },
+    //登录，与后台数据库进行联系
+    login() {
+      loginApi
+        .loginData(this.username, this.password)
+        .then(response => {
+          console.log(response)
+          if (response.data.flag) {//根据返回的布尔值判断
+            this.$router.push({ path: "/home" });
+          } else {
+            this.$dialog.alert({
+              message: response.data.message
+            });
+            this.username = "";
+            this.password = "";
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };

@@ -1,9 +1,9 @@
 import request from "@/utils/request"
 
 export default {
-    homeData() {
+    classificationData() {
         return request({
-            url: `/good/home`,
+            url: `/good/classification`,
             method: 'get',
             data:{}
         })

@@ -1,5 +1,5 @@
 [{
-        "id": "1",
+        "home_id": "1",
         "title": "精美手办",
         "commodity": [{
             "img": "https://game.gtimg.cn/images/zb/x5/uploadImg/goods/201910/20191017152303_40971.jpg",
@@ -21,7 +21,7 @@
 
     },
     {
-        "id": "2",
+        "home_id": "2",
         "title": "数码3C",
         "commodity": [{
             "img": "https://game.gtimg.cn/images/zb/x5/uploadImg/goods/201911/20191106143506_64281.jpg",
@@ -43,7 +43,7 @@
 
     },
     {
-        "id": "3",
+        "home_id": "3",
         "title": "生活周边",
         "commodity": [{
             "img": "https://game.gtimg.cn/images/zb/x5/uploadImg/goods/201909/20190916135819_58379.jpg",
@@ -65,7 +65,7 @@
 
     },
     {
-        "id": "4",
+        "home_id": "4",
         "title": "服装服饰",
         "commodity": [{
             "img": "https://game.gtimg.cn/images/zb/x5/uploadImg/goods/201907/20190719111011_65803.jpg",
