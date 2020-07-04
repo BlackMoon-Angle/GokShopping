@@ -2,10 +2,18 @@
   <div id="app">
     <!-- 主要路由 -->
     <router-view />
-    <van-tabbar v-model="active" v-if="$route.name != 'Detail' && $route.name != 'Login' && $route.name != 'Register' && $route.name !='ModifyPassword' ">
+    <van-tabbar
+      v-model="active"
+      v-if="$route.name != 'Detail' && $route.name != 'Login' && $route.name != 'Register' && $route.name !='ModifyPassword' "
+    >
       <van-tabbar-item icon="wap-home-o" replace to="/Home" name="Home">首页</van-tabbar-item>
       <van-tabbar-item icon="shop-o" to="/Classification" name="Classification">分类</van-tabbar-item>
-      <van-tabbar-item icon="cart-o" :badge="$store.getters.Shop_num" to="/ShoppingCart" name="ShoppingCart">购物车</van-tabbar-item>
+      <van-tabbar-item
+        icon="cart-o"
+        :badge="badge"
+        to="/ShoppingCart"
+        name="ShoppingCart"
+      >购物车</van-tabbar-item>
       <van-tabbar-item icon="user-o" to="/User" name="User">我的</van-tabbar-item>
     </van-tabbar>
     <!-- 购物车导航 -->
@@ -35,6 +43,8 @@ body {
 }
 </style>
 <script>
+import loginApi from "@/api/login"; //引入登录数据请求接口
+import { getToken, setToken, getUser, setUser, logOut } from "@/utils/auth"; //引入相关方法用于对本地存储进行数据的操作
 import request from "@/utils/request"; // @代表 ./src
 export default {
   data() {
@@ -42,7 +52,8 @@ export default {
       ShopCartJson: "", //一开始请求，准备好的数据
       route_navigation: true, //路由导航
       product_navigation: false, //商品导航
-      active: this.$route.name
+      active: this.$route.name,
+      badge: "0"
     };
   },
   methods: {
@@ -76,10 +87,28 @@ export default {
           this.$store.dispatch("add_shop", item);
         }
       });
+    },
+    badge_num() {
+      let storage = getToken();
+      if (storage == null) {
+        this.badge = "0";
+      } else {
+        loginApi
+          .token_login(storage)
+          .then(response => {
+            if (response.data.flag) {
+              this.badge = this.$store.getters.Shop_num;
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
     }
   },
   created: function() {
     this.ShopCart_data();
+    this.badge_num();
   }
 };
 </script>

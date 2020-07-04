@@ -1,9 +1,13 @@
 <template>
   <div class="main">
     <!-- 单元格 -->
-    <router-link to="/Login">
-      <van-cell class="user" title="登录" icon="https://shp.qlogo.cn/daoju/9999/9999_1/0" is-link />
-    </router-link>
+    <van-cell
+      class="user"
+      :title="title"
+      icon="https://shp.qlogo.cn/daoju/9999/9999_1/0"
+      is-link
+      @click.native="login"
+    />
     <van-cell title="我的订单" is-link value="全部订单" />
     <!-- 订单 -->
     <van-grid :border="false" :column-num="5">
@@ -37,18 +41,65 @@
 </template>
 
 <script>
+import loginApi from "@/api/login"; //引入登录数据请求接口
+import { getToken, setToken, getUser, setUser, logOut } from "@/utils/auth"; //引入相关方法用于对本地存储进行数据的操作
 export default {
   data() {
     return {
       show: false,
       username: "",
-      password: ""
+      password: "",
+      title: "登录"
     };
   },
   methods: {
     onSubmit(values) {
       console.log("submit", values);
+    },
+    login() {
+      let storage = getToken();
+      if (storage == null) {
+        this.$router.push({ path: "/Login" });
+      } else {
+        loginApi
+          .token_login(storage)
+          .then(response => {
+            if (response.data.flag) {
+              this.$dialog
+                .confirm({
+                  title: "退出登录",
+                  message: "是否选择退出登录？"
+                })
+                .then(() => {
+                  logOut()
+                  location. reload()
+                })
+                .catch(() => {});
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      }
+    },
+    login_ol() {
+      let storage = getToken();
+      loginApi
+        .token_login(storage)
+        .then(response => {
+          if (response.data.flag) {
+            this.title = getUser();
+          } else {
+            this.title = "登录";
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
+  },
+  created: function() {
+    this.login_ol();
   }
 };
 </script>

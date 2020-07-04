@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import loginApi from "@/api/login"; //引入登录数据请求接口
+import { getToken, setToken, getUser, setUser, logOut } from "@/utils/auth"; //引入相关方法用于对本地存储进行数据的操作
 export default {
   data() {
     return {
@@ -99,15 +101,43 @@ export default {
     },
     //判断购物车是否为空
     ShopCart_data() {
-      if (this.$store.state.VueX_ShopCart.ShopCartInfo.length == 0) {
-        this.empty_cart = true;
-        this.shop_cart = false;
-        this.$dialog.alert({
-          message: "购物车是空的哦！快去购物吧！"
-        });
+      let storage = getToken();
+      if (storage == null) {
+        this.$dialog
+          .alert({
+            message: "未登录用户，请前往登录！"
+          })
+          .then(() => {
+            this.$router.push({ path: "/Login" });
+          });
       } else {
-        this.empty_cart = false;
-        this.shop_cart = true;
+        loginApi
+          .token_login(storage)
+          .then(response => {
+            if (response.data.flag) {
+              if (this.$store.state.VueX_ShopCart.ShopCartInfo.length == 0) {
+                this.empty_cart = true;
+                this.shop_cart = false;
+                this.$dialog.alert({
+                  message: "购物车是空的哦！快去购物吧！"
+                });
+              } else {
+                this.empty_cart = false;
+                this.shop_cart = true;
+              }
+            } else {
+              this.$dialog
+                .alert({
+                  message: "未登录用户，请前往登录！"
+                })
+                .then(() => {
+                  this.$router.push({ path: "/Login" });
+                });
+            }
+          })
+          .catch(err => {
+            console.log(err);
+          });
       }
     },
     //添加购买数量

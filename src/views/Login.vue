@@ -12,7 +12,7 @@
     <!-- 表单 -->
     <van-form @submit="onSubmit">
       <van-field
-        v-model="username"
+        v-model="user.username"
         name="用户名"
         label="用户名"
         placeholder="用户名"
@@ -20,7 +20,7 @@
         :rules="[{ required: true, message: '请填写用户名' }]"
       />
       <van-field
-        v-model="password"
+        v-model="user.password"
         :type="type"
         name="密码"
         label="密码"
@@ -35,7 +35,7 @@
         </router-link>
       </div>
       <div style="margin-top: 0px;">
-        <van-button round block type="info" native-type="button" @click="login">登录</van-button>
+        <van-button round block type="info" native-type="button" @click="login()">登录</van-button>
       </div>
     </van-form>
   </div>
@@ -43,11 +43,18 @@
 
 <script>
 import loginApi from "@/api/login"; //引入登录数据请求接口
+import { getToken, setToken, getUser, setUser, logOut } from "@/utils/auth"; //引入相关方法用于对本地存储进行数据的操作
 export default {
   data() {
     return {
-      username: "",
-      password: "",
+      user: {
+        username: "",
+        password: ""
+      },
+      user_token: {
+        token: "",
+        username: ""
+      },
       type: "password",
       eye: "closed-eye"
     };
@@ -67,13 +74,34 @@ export default {
       this.type = this.type === "password" ? "text" : "password";
       this.eye = this.eye === "closed-eye" ? "eye-o" : "closed-eye";
     },
+    //存Token
+    SET_TOKEN(user_token, token) {
+      user_token.token = token; //存到state
+      setToken(token); //存到本地存储
+    },
+    //存用户名
+    SET_USER(user_token, name) {
+      user_token.username = name;
+      setUser(name);
+    },
+    //清空本地存储
+    Remove_inf(state) {
+      //清除本地存储
+      logOut();
+      //清空state的数据
+      state.token = "";
+      state.username = "";
+    },
     //登录，与后台数据库进行联系
-    login() {
+    login(user) {
       loginApi
-        .loginData(this.username, this.password)
+        .loginData(this.user.username, this.user.password)
         .then(response => {
-          console.log(response)
-          if (response.data.flag) {//根据返回的布尔值判断
+          console.log(response);
+          if (response.data.flag) {
+            //根据返回的布尔值判断
+            this.SET_TOKEN(this.user_token, response.data.data.token); //后端生成的token
+            this.SET_USER(this.user_token, this.user.username); 
             this.$router.push({ path: "/home" });
           } else {
             this.$dialog.alert({
