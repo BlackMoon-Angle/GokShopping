@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 购物车为空时 -->
-    <section class="empty_cart" v-if="empty_cart">
+    <section class="empty_cart" v-if="cart_list.length == 0">
       <div class="box">
         <i></i>
         <div class="text">购物车好空呀,快去选购吧</div>
@@ -11,7 +11,7 @@
       </div>
     </section>
     <!-- 购物车不为空 -->
-    <section class="shop_cart" v-if="shop_cart">
+    <section class="shop_cart" v-if="cart_list.length != 0">
       <van-checkbox
         class="van_head"
         v-model="$store.state.VueX_ShopCart.all_checked"

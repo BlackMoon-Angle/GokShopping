@@ -1,3 +1,4 @@
+import shopcartApi from "@/api/shopcart"; //引入购物车数据请求接口
 let ShopCartInfo = {
     getData() {
         //获取数据
@@ -15,7 +16,7 @@ let ShopCartInfo = {
 };
 export default {
     state: {//使用state数据传输，传输购物车中的商品清单
-        ShopCartInfo: ShopCartInfo.getData(),//获取数据
+        ShopCartInfo: ShopCartInfo.getData(),//获取数据npm
         Total_price: 0,//总价
         all_checked: false,//一级全选按钮
     },
@@ -41,6 +42,29 @@ export default {
     },
     mutations: {//点击商品列表中的商品，数据添加到购物车中，并显示在购物车中
         add_shop(state, data) {//添加商品
+            //购物车数据请求
+            // shopcartApi
+            //     .shopcartOne(data)
+            //     .then(response => {//先查询是否存在这个商品
+            //         if (response.data.length == 0) {
+            //             shopcartApi
+            //                 .add_shopcart(data)
+            //                 .then(response => {
+            //                     this._vm.$toast.success('添加成功！');
+            //                 })
+            //                 .catch(err => {
+            //                     console.log(err);
+            //                 });
+            //         }
+            //         else {
+            //             this._vm.$dialog.alert({
+            //                 message: "商品已加入到购物车，请到购物车中确认！"
+            //             });
+            //         }
+            //     })
+            //     .catch(err => {
+            //         console.log(err);
+            //     })
             let datas = { //传入的商品属性
                 cart_id: data.cart_id,//商品id
                 name: data.name,//商品名称

@@ -97,18 +97,20 @@ export default {
       loginApi
         .loginData(this.user.username, this.user.password)
         .then(response => {
-          console.log(response);
           if (response.data.flag) {
             //根据返回的布尔值判断
             this.SET_TOKEN(this.user_token, response.data.data.token); //后端生成的token
-            this.SET_USER(this.user_token, this.user.username); 
+            this.SET_USER(this.user_token, this.user.username);
             this.$router.push({ path: "/home" });
           } else {
-            this.$dialog.alert({
-              message: response.data.message
-            });
-            this.username = "";
-            this.password = "";
+            this.$dialog
+              .alert({
+                message: response.data.message
+              })
+              .then(() => {
+                this.user.username = "";
+                this.user.password = "";
+              });
           }
         })
         .catch(err => {

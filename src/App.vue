@@ -10,7 +10,7 @@
       <van-tabbar-item icon="shop-o" to="/Classification" name="Classification">分类</van-tabbar-item>
       <van-tabbar-item
         icon="cart-o"
-        :badge="badge"
+        :badge="badge_boolean ? $store.getters.Shop_num : 0"
         to="/ShoppingCart"
         name="ShoppingCart"
       >购物车</van-tabbar-item>
@@ -21,7 +21,7 @@
       <van-goods-action-icon icon="shop-o" text="店铺" />
       <van-goods-action-icon icon="service-o" text="客服" />
       <van-goods-action-icon icon="like-o" text="收藏" />
-      <van-goods-action-button color="#333" type="warning" text="加入购物车" @click="Deatil_cart" />
+      <van-goods-action-button color="#333" type="warning" text="加入购物车" @click="ShopCart_data" />
       <van-goods-action-button color="#7232dd" type="danger" text="立即购买" />
     </van-goods-action>
   </div>
@@ -44,16 +44,17 @@ body {
 </style>
 <script>
 import loginApi from "@/api/login"; //引入登录数据请求接口
+import shopcartApi from "@/api/shopcart"; //引入购物车数据请求接口
 import { getToken, setToken, getUser, setUser, logOut } from "@/utils/auth"; //引入相关方法用于对本地存储进行数据的操作
 import request from "@/utils/request"; // @代表 ./src
 export default {
   data() {
     return {
-      ShopCartJson: "", //一开始请求，准备好的数据
+      // ShopCartMongo: "", //一开始请求，准备好的数据
       route_navigation: true, //路由导航
       product_navigation: false, //商品导航
       active: this.$route.name,
-      badge: "0"
+      badge_boolean: false //用于未登录时，购物车的左上角数应该显示为0
     };
   },
   methods: {
@@ -70,34 +71,53 @@ export default {
       }
     },
     ShopCart_data() {
-      //数据请求
-      request
-        .get("http://localhost:8080/json/ShopCart.json")
+      //购物车数据请求
+      shopcartApi
+        .shopcartData()
         .then(response => {
-          this.ShopCartJson = response.data;
+          // this.ShopCartMongo = response.data
+          this.Deatil_cart(response.data);
         })
         .catch(err => {
           console.log(err);
         });
     },
-    Deatil_cart() {
+    Deatil_cart(ShopCartMongo) {
       //详细页添加到购物车时的通信
-      this.ShopCartJson.forEach(item => {
-        if (this.$route.params.id == item.cart_id) {
-          this.$store.dispatch("add_shop", item);
-        }
-      });
+      let storage = getToken();
+      loginApi
+        .token_login(storage)
+        .then(response => {
+          if (response.data.flag) {
+            ShopCartMongo.forEach(item => {
+              if (this.$route.params.id == item.cart_id) {
+                this.$store.dispatch("add_shop", item);
+              }
+            });
+          } else {
+            this.$dialog
+              .alert({
+                message: "未登录用户，请前往登录！"
+              })
+              .then(() => {
+                this.$router.push({ path: "/Login" });
+              });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     badge_num() {
       let storage = getToken();
       if (storage == null) {
-        this.badge = "0";
+        this.badge_boolean = false;
       } else {
         loginApi
           .token_login(storage)
           .then(response => {
             if (response.data.flag) {
-              this.badge = this.$store.getters.Shop_num;
+              this.badge_boolean = true;
             }
           })
           .catch(err => {
@@ -106,8 +126,16 @@ export default {
       }
     }
   },
+  watch: {
+    $route() {
+      //跳转到该页面后需要进行的操作
+      // this.ShopCart_data();
+      this.badge_num();
+      this.active = this.$route.name;
+    }
+  },
   created: function() {
-    this.ShopCart_data();
+    // this.ShopCart_data();
     this.badge_num();
   }
 };

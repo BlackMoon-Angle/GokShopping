@@ -61,7 +61,8 @@
 </style>
 <script>
 import request from "@/utils/request"; // @代表 ./src
-import homeApi from "@/api/home";//引入首页数据请求接口
+import homeApi from "@/api/home"; //引入首页数据请求接口
+var page = 1; //用于懒加载
 export default {
   data() {
     return {
@@ -75,18 +76,43 @@ export default {
       ]
     };
   },
+  mounted() {
+    window.addEventListener("scroll", this.handleScroll);
+  },
   methods: {
     //请求mongodb数据中的home集合数据
     homeData() {
       homeApi
         .homeData()
         .then(response => {
-          this.commoditylist = response.data;
+          if (page >= response.data.length) {
+            page = response.data.length;
+            this.commoditylist = response.data.slice(0, page);
+          } else {
+            this.commoditylist = response.data.slice(0, page);
+          }
         })
         .catch(err => {
           console.log(err);
         });
     },
+    //滚动条触底事件
+    handleScroll() {
+      var scrollTop =
+        document.documentElement.scrollTop || document.body.scrollTop;
+      //变量scrollHeight是滚动条的总高度
+      var scrollHeight =
+        document.documentElement.scrollHeight || document.body.scrollHeight;
+      if (
+        Math.round(
+          scrollTop + document.documentElement.clientHeight ||
+            document.body.clientHeight
+        ) == scrollHeight
+      ) {
+        page++;
+        this.homeData();
+      }
+    }
   },
   created: function() {
     this.homeData();
