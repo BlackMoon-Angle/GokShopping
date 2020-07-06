@@ -76,14 +76,14 @@ export default {
     };
   },
   computed: {},
-  watch: {
-    list: {
-      deep: true,
-      handler: function() {
-        this.$store.state.VueX_ShopCart.all_checked == true;
-      }
-    }
-  },
+  // watch: {
+  //   cart_list: {
+  //     deep: true,
+  //     handler: function() {
+  //       // console.log('1')
+  //     }
+  //   }
+  // },
   methods: {
     showNotify() {
       //成功
